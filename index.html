@@ -104,12 +104,6 @@
           <button class="btn-game" data-game="Penalty">⚽ Penalty</button>
         </div>
 
-        <!-- Ввод своих коэффициентов -->
-        <div id="aviatorInput" class="mt-4 text-center">
-          <p class="text-gray-300 mb-2">Enter your Aviator multipliers (comma separated):</p>
-          <input id="customCoeffs" type="text" placeholder="1.45, 2.10, 3.75" class="bg-gray-700 text-white p-3 rounded-md w-64 text-center" />
-        </div>
-
         <!-- Кнопка запуска -->
         <button id="getSignalButton" class="bg-green-500 hover:bg-green-600 text-white font-semibold py-3 px-6 rounded-xl text-lg transition mt-4">Get Signal</button>
 
@@ -127,6 +121,11 @@
   </div>
 
   <script>
+    // ====== НАСТРОЙКА ТВОИХ КОЭФФИЦИЕНТОВ ======
+    // Впиши сюда свои 3 коэффициента (можно больше)
+    const aviatorCoefficients = [2.59, 2.74, 4.13];
+    let coeffIndex = 0;
+
     setTimeout(() => {
       document.getElementById("loading").classList.add("hidden-screen");
       document.getElementById("mainContent").classList.remove("hidden-screen");
@@ -142,10 +141,7 @@
     const signalValue = document.getElementById("signalValue");
     const minesBoard = document.getElementById("minesBoard");
     const signalsBox = document.getElementById("signalsBox");
-    const customCoeffsInput = document.getElementById("customCoeffs");
     let selectedGame = "Aviator";
-    let customCoeffs = [];
-    let coeffIndex = 0;
 
     // Подключение аккаунта
     connectButton.addEventListener("click", () => {
@@ -210,14 +206,14 @@
         return;
       }
 
-      // Aviator — использовать введённые коэффициенты
-      const inputVal = customCoeffsInput.value.trim();
-      if (inputVal) {
-        customCoeffs = inputVal.split(',').map(v => v.trim());
+      // Aviator — берём твои коэффициенты по очереди
+      let multiplier;
+      if (aviatorCoefficients.length > 0) {
+        multiplier = aviatorCoefficients[coeffIndex % aviatorCoefficients.length];
+        coeffIndex++;
+      } else {
+        multiplier = randomMultiplier();
       }
-
-      let multiplier = customCoeffs.length ? customCoeffs[coeffIndex % customCoeffs.length] : randomMultiplier();
-      coeffIndex++;
 
       signalValue.textContent = 'x' + multiplier;
       minesBoard.style.display = 'none';
