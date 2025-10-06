@@ -189,7 +189,7 @@
 
     function generateSignal(game){
       const now = new Date().toLocaleTimeString();
-      signalText.textContent = `🎯 [${now}] ${game}`;
+      signalText.textContent = `🎯 ${game}`;
       signalValue.className = '';
 
       if(game === 'Mines'){
